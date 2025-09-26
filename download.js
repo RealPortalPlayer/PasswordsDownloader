@@ -5,6 +5,8 @@ const {execSync} = require("child_process")
 const {rmSync, existsSync, readFileSync, copyFileSync} = require("fs")
 const {createInterface} = require("readline")
 
+const root = process.argv.length > 2 ? process.argv[2] : "http://10.0.44.20:3000"
+
 if (existsSync("output")) {
     console.log("Removing old output")
     rmSync("output", {
@@ -15,7 +17,7 @@ if (existsSync("output")) {
 console.log("Downloading master")
 
 try {
-    execSync("git clone http://10.0.44.20:3000/Passwords/Master output")
+    execSync(`git clone ${root}/Passwords/Master output`)
 } catch {
     console.error("Failed to download master (are you connected to the intranet?)")
     process.exit(1)
@@ -37,6 +39,10 @@ for (const project of readmeOriginal.split("\n")) {
 
     name = name.substring(0, name.indexOf("]"))
     url = url.substring(0, url.length - 1)
+
+    if (process.argv.length > 2)
+        url = `${root}${url.substring(22)}`
+
     urls[name] = {
         url,
         enabled: false
