@@ -59,9 +59,9 @@ for (const project of readmeOriginal.split("\n")) {
     }
 }
 
-const print = () => {
+const print = character => {
     for (const project in urls)
-        console.log(`${project}: ${urls[project].enabled}`)
+        console.log(`${project}${character} ${urls[project].enabled}`)
 }
 
 const get = name => {
@@ -76,7 +76,7 @@ const get = name => {
 }
 
 console.log("Select your options:")
-print()
+print(":")
 
 const input = createInterface(process.stdin, process.stdout)
 
@@ -90,7 +90,7 @@ input.on("line", line => {
     switch (commandName) {
         case "print":
             console.log("Current configuration:")
-            print()
+            print(":")
             break
 
         case "done":
@@ -100,6 +100,15 @@ input.on("line", line => {
         case "cancel":
             process.exit(0)
             return
+
+        case "all":
+            if (commandArguments.length > 0) {
+                for (const name in urls)
+                    urls[name].enabled = commandArguments[0].toLowerCase() === "true" || parseInt(commandArguments[0]) >= 1
+            }
+
+            print(" =")
+            break
 
         default:
             const name = get(commandName)
