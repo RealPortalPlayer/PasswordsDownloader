@@ -62,7 +62,8 @@ for (const project of readmeOriginal.split("\n")) {
 
     urls[name] = {
         url,
-        enabled: false
+        enabled: false,
+        commit: "<not grabbed>"
     }
 }
 
@@ -157,6 +158,14 @@ input.on("close", () => {
         execSync(`git clone ${url.url} .tmp`)
         copyFileSync(`.tmp/${name}.kdbx`, `output/${name}.kdbx`)
         copyFileSync(`.tmp/${name}.keyx;`, `output/${name}.keyx;`)
+
+        console.log("Getting commit information")
+
+        const commitHash = execSync("cd .tmp && git log -1 --pretty=%H").toString()
+
+        urls[name].commit = execSync("cd .tmp && git log -1 --pretty=%B").toString()
+        urls[name].commit = `[${commitHash.substring(0, commitHash.length - 1)}] ${urls[name].commit.substring(0, urls[name].commit.length - 2)}`
+
         rmSync(".tmp", {
             recursive: true
         })
