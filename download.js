@@ -1,4 +1,7 @@
 // Purpose: Downloader for the passwords database
 // Created on: 9/26/25 @ 1:24 AM
 
-console.log("Hello, World!")
+const {execSync} = require("child_process")
+
+console.log("Downloading master")
+execSync("git clone http://10.0.44.20:3000/Passwords/Master output")
