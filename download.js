@@ -128,13 +128,19 @@ input.on("line", line => {
 })
 
 input.on("close", () => {
-    console.log("Processing configuration")
+    let printed = false
 
     for (const name in urls) {
         const url = urls[name]
 
         if (!url.enabled)
             continue
+
+        if (!printed) {
+            console.log("Processing configuration")
+
+            printed = true
+        }
 
         console.log(`Getting: ${name}`)
         execSync(`git clone ${url.url} .tmp`)
