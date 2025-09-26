@@ -3,6 +3,8 @@
 
 const {execSync} = require("child_process")
 const {rmSync, existsSync, readFileSync} = require("fs")
+const {createInterface} = require("readline")
+const url = require("node:url");
 
 if (existsSync("output")) {
     console.log("Removing old output")
@@ -35,4 +37,11 @@ console.log("Select your options:")
 for (const project in urls)
     console.log(`${project}: ${urls[project].enabled}`)
 
-console.log("> ")
+const input = createInterface(process.stdin, process.stdout)
+
+input.setPrompt("> ")
+input.prompt(true)
+
+input.on("line", input => {
+    console.log(input)
+})
