@@ -110,4 +110,6 @@ input.on("close", () => {
     }
 
     console.log(`Your package is now ready: ${process.cwd()}/output`)
+    console.warn("It isn't recommended to write to this package, as any changes will be lost")
+    console.warn("You are expected to re-run this command to update your package")
 })
