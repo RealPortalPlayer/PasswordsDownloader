@@ -113,3 +113,12 @@ input.on("close", () => {
     console.warn("It isn't recommended to write to this package, as any changes will be lost")
     console.warn("You are expected to re-run this command to update your package")
 })
+
+input.on("SIGINT", () => {
+    console.log("cancel (ctrl+c)")
+
+    if (existsSync(".tmp"))
+        rmSync(".tmp")
+
+    process.exit(0)
+})
