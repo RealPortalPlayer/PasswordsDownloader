@@ -188,7 +188,10 @@ input.on("close", () => {
     const parseDone = performance.now()
 
     console.log("Writing results")
-    writeFileSync("output/results.txt", `Script started: ${new Date(scriptStart)}
+    writeFileSync("output/results.txt", `The contents of this package should be treated as read only
+Do NOT make any changes to any of these databases, as they will be lost on update
+    
+Script started: ${new Date(scriptStart)}
 Script commit information: ${getGitCommit(__dirname)}
 README parsing: ${parseReadmeDone - parseReadmeStart >= 1 ? `${parseReadmeDone - parseReadmeStart}ms` : "nearly instantly"}
 Configuration parsing: ${parseDone - parseStart >= 1 ? `${parseDone - parseStart}ms` : "nearly instantly"}
