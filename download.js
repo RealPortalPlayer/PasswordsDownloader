@@ -54,7 +54,16 @@ input.on("line", line => {
             console.log("Current configuration:")
             print()
             break
+
+        case "done":
+            input.close()
+            return
     }
 
     input.prompt(true)
+})
+
+input.on("close", () => {
+    console.log("Processing configuration")
+    // TODO
 })
