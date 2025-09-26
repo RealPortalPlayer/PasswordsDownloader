@@ -32,16 +32,29 @@ for (const project of readmeOriginal.split("\n")) {
     }
 }
 
-console.log("Select your options:")
+const print = () => {
+    for (const project in urls)
+        console.log(`${project}: ${urls[project].enabled}`)
+}
 
-for (const project in urls)
-    console.log(`${project}: ${urls[project].enabled}`)
+console.log("Select your options:")
+print()
 
 const input = createInterface(process.stdin, process.stdout)
 
 input.setPrompt("> ")
 input.prompt(true)
 
-input.on("line", input => {
-    console.log(input)
+input.on("line", line => {
+    const commandArguments = line.split(" ")
+    const commandName = commandArguments.shift()
+
+    switch (commandName) {
+        case "print":
+            console.log("Current configuration:")
+            print()
+            break
+    }
+
+    input.prompt(true)
 })
