@@ -2,9 +2,10 @@
 // Created on: 9/26/25 @ 1:24 AM
 
 const {execSync} = require("child_process")
-const {rmSync, existsSync, readFileSync, copyFileSync} = require("fs")
+const {rmSync, existsSync, readFileSync, copyFileSync, writeFileSync} = require("fs")
 const {createInterface} = require("readline")
 
+const scriptStart = Date.now()
 const root = process.argv.length > 2 ? process.argv[2] : "http://10.0.44.20:3000"
 
 try {
@@ -47,6 +48,8 @@ console.log("Parsing optional password databases")
 
 let urls = {}
 
+const parseReadmeStart = performance.now()
+
 for (const project of readmeOriginal.split("\n")) {
     let name = project.substring(3)
     let url = project.substring(project.indexOf("(") + 1)
@@ -62,6 +65,8 @@ for (const project of readmeOriginal.split("\n")) {
         enabled: false
     }
 }
+
+const parseReadmeDone = performance.now()
 
 const print = character => {
     for (const project in urls)
@@ -134,6 +139,8 @@ input.on("line", line => {
 input.on("close", () => {
     let printed = false
 
+    const parseStart = performance.now()
+
     for (const name in urls) {
         const url = urls[name]
 
@@ -155,6 +162,23 @@ input.on("close", () => {
         })
     }
 
+    const parseDone = performance.now()
+
+    console.log("Writing results")
+    writeFileSync("output/results.txt", `Script started: ${new Date(scriptStart)}
+README parsing: ${parseReadmeDone - parseReadmeStart >= 1 ? `${parseReadmeDone - parseReadmeStart}ms` : "nearly instantly"}
+Configuration parsing: ${parseDone - parseStart >= 1 ? `${parseDone - parseStart}ms` : "nearly instantly"}
+Configuration:\n${JSON.stringify(urls)
+        .replaceAll(":{", ": {\n\t\t") // "Intranet":{ -> "Intranet": {\n\t
+        .replaceAll("\",", "\",\n\t\t") // "url":"test", -> "urk":"test",\n\t\t
+        .replace("{", "{\n\t")
+        .replaceAll("},", "\n\t},\n\t")
+        .replaceAll("e,", "e,\n\t\t") // "enabled":true, -> "enabled":true,\n\t\t
+        .replace("}}", "\n\t}\n}")
+        .replaceAll(":\"", ": \"") // "url":"test" -> "url": "test"
+        .replaceAll(":true", ": true") // "enabled":true -> "enabled": true
+        .replaceAll(":false", ": false") // "enabled":false -> "enabled": false
+    }`)
     console.log(`Your package is now ready: ${process.cwd()}/output`)
     console.warn("It isn't recommended to write to this package, as any changes will be lost")
     console.warn("You are expected to re-run this command to update your package")
