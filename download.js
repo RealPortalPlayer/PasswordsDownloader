@@ -24,5 +24,15 @@ for (const project of readmeOriginal.split("\n")) {
 
     name = name.substring(0, name.indexOf("]"))
     url = url.substring(0, url.length - 1)
-    urls[name] = url
+    urls[name] = {
+        url,
+        enabled: false
+    }
 }
+
+console.log("Select your options:")
+
+for (const project in urls)
+    console.log(`${project}: ${urls[project].enabled}`)
+
+console.log("> ")
