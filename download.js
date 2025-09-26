@@ -7,6 +7,8 @@ const {createInterface} = require("readline")
 
 const scriptStart = Date.now()
 const root = process.argv.length > 2 ? process.argv[2] : "http://10.0.44.20:3000"
+const username = process.argv.length > 3 ? process.argv[3] : "Passwords"
+const master = process.argv.length > 4 ? process.argv[4] : "Master"
 
 try {
     execSync("git help")
@@ -28,7 +30,7 @@ if (existsSync("output")) {
 console.log("Downloading master")
 
 try {
-    execSync(`git clone ${root}/Passwords/Master output`)
+    execSync(`git clone ${root}/${username}/${master} output`)
 } catch {
     console.error("Failed to download master (are you connected to the intranet?)")
     process.exit(1)
@@ -183,7 +185,7 @@ input.on("close", () => {
     }
 
     urls["Master"] = {
-        "url": `${root}/Passwords/Master`,
+        "url": `${root}/${username}/${master}`,
         "enabled": true,
         "commit": masterCommit
     }
