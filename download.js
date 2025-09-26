@@ -34,6 +34,17 @@ try {
     process.exit(1)
 }
 
+console.log("Getting master commit information")
+
+const getGitCommit = directory => {
+    const hash = execSync(`cd ${directory} && git log -1 --pretty=%H`).toString()
+    const message = execSync(`cd ${directory} && git log -1 --pretty=%B`).toString()
+
+    return `[${hash.substring(0, hash.length - 1)}] ${message.substring(0, message.length - 2)}`
+}
+
+const masterCommit = getGitCommit("output")
+
 console.log("Removing unneeded files")
 rmSync("output/.gitignore")
 rmSync("output/.git", {
@@ -161,14 +172,17 @@ input.on("close", () => {
 
         console.log("Getting commit information")
 
-        const commitHash = execSync("cd .tmp && git log -1 --pretty=%H").toString()
-
-        urls[name].commit = execSync("cd .tmp && git log -1 --pretty=%B").toString()
-        urls[name].commit = `[${commitHash.substring(0, commitHash.length - 1)}] ${urls[name].commit.substring(0, urls[name].commit.length - 2)}`
+        urls[name].commit = getGitCommit(".tmp")
 
         rmSync(".tmp", {
             recursive: true
         })
+    }
+
+    urls["Master"] = {
+        "url": `${root}/Passwords/Master`,
+        "enabled": true,
+        "commit": masterCommit
     }
 
     const parseDone = performance.now()
