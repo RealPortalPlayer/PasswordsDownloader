@@ -14,6 +14,9 @@ try {
     process.exit(1)
 }
 
+if (process.argv.length > 2)
+    console.log(`Using custom root: ${root}`)
+
 if (existsSync("output")) {
     console.log("Removing old output")
     rmSync("output", {
