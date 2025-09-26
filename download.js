@@ -144,7 +144,9 @@ input.on("SIGINT", () => {
     console.log("cancel (ctrl+c)")
 
     if (existsSync(".tmp"))
-        rmSync(".tmp")
+        rmSync(".tmp", {
+            recursive: true
+        })
 
     process.exit(0)
 })
