@@ -7,6 +7,13 @@ const {createInterface} = require("readline")
 
 const root = process.argv.length > 2 ? process.argv[2] : "http://10.0.44.20:3000"
 
+try {
+    execSync("git help")
+} catch {
+    console.error("Either git is not installed, or your copy is broken")
+    process.exit(1)
+}
+
 if (existsSync("output")) {
     console.log("Removing old output")
     rmSync("output", {
