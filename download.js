@@ -13,7 +13,14 @@ if (existsSync("output")) {
 }
 
 console.log("Downloading master")
-execSync("git clone http://10.0.44.20:3000/Passwords/Master output")
+
+try {
+    execSync("git clone http://10.0.44.20:3000/Passwords/Master output")
+} catch {
+    console.error("Failed to download master (are you connected to the intranet?)")
+    process.exit(1)
+}
+
 console.log("Removing unneeded files")
 rmSync("output/.gitignore")
 rmSync("output/.git", {
