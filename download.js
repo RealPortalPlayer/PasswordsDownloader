@@ -38,7 +38,7 @@ const print = () => {
 
 const get = name => {
     for (const url in urls) {
-        if (url.toLowerCase() !== name.toLowerCase())
+        if (!url.toLowerCase().startsWith(name.toLowerCase()))
             continue
 
         return url
