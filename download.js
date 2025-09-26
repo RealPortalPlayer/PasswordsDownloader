@@ -4,7 +4,6 @@
 const {execSync} = require("child_process")
 const {rmSync, existsSync, readFileSync} = require("fs")
 const {createInterface} = require("readline")
-const url = require("node:url");
 
 if (existsSync("output")) {
     console.log("Removing old output")
@@ -37,6 +36,17 @@ const print = () => {
         console.log(`${project}: ${urls[project].enabled}`)
 }
 
+const get = name => {
+    for (const url in urls) {
+        if (url.toLowerCase() !== name.toLowerCase())
+            continue
+
+        return url
+    }
+
+    return null
+}
+
 console.log("Select your options:")
 print()
 
@@ -58,6 +68,19 @@ input.on("line", line => {
         case "done":
             input.close()
             return
+
+        default:
+            const url = get(commandName)
+
+            if (url == null) {
+                console.error("Invalid command and configuration name")
+                break
+            }
+
+            if (commandArguments.length > 0)
+                urls[url].enabled = commandArguments[0].toLowerCase() === "true" || parseInt(commandArguments[0]) >= 1
+
+            console.log(`${url} = ${urls[url].enabled}`)
     }
 
     input.prompt(true)
