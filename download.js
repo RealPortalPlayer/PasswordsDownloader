@@ -38,9 +38,13 @@ rmSync("output/.gitignore")
 rmSync("output/.git", {
     recursive: true
 })
-console.log("Parsing optional password databases")
 
 const readmeOriginal = readFileSync("output/README.md").toString().trim()
+
+rmSync("output/README.md")
+
+console.log("Parsing optional password databases")
+
 let urls = {}
 
 for (const project of readmeOriginal.split("\n")) {
