@@ -14,6 +14,11 @@ if (existsSync("output")) {
 
 console.log("Downloading master")
 execSync("git clone http://10.0.44.20:3000/Passwords/Master output")
+console.log("Removing unneeded files")
+rmSync("output/.gitignore")
+rmSync("output/.git", {
+    recursive: true
+})
 console.log("Parsing optional password databases")
 
 const readmeOriginal = readFileSync("output/README.md").toString().trim()
