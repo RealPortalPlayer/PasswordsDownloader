@@ -37,11 +37,11 @@ const print = () => {
 }
 
 const get = name => {
-    for (const url in urls) {
-        if (!url.toLowerCase().startsWith(name.toLowerCase()))
+    for (const urlName in urls) {
+        if (!urlName.toLowerCase().startsWith(name.toLowerCase()))
             continue
 
-        return url
+        return urlName
     }
 
     return null
@@ -70,17 +70,17 @@ input.on("line", line => {
             return
 
         default:
-            const url = get(commandName)
+            const name = get(commandName)
 
-            if (url == null) {
+            if (name == null) {
                 console.error("Invalid command and configuration name")
                 break
             }
 
             if (commandArguments.length > 0)
-                urls[url].enabled = commandArguments[0].toLowerCase() === "true" || parseInt(commandArguments[0]) >= 1
+                urls[name].enabled = commandArguments[0].toLowerCase() === "true" || parseInt(commandArguments[0]) >= 1
 
-            console.log(`${url} = ${urls[url].enabled}`)
+            console.log(`${name} = ${urls[name].enabled}`)
     }
 
     input.prompt(true)
