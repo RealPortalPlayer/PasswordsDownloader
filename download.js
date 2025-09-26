@@ -2,7 +2,7 @@
 // Created on: 9/26/25 @ 1:24 AM
 
 const {execSync} = require("child_process")
-const {rmSync, existsSync, readFileSync} = require("fs")
+const {rmSync, existsSync, readFileSync, copyFileSync} = require("fs")
 const {createInterface} = require("readline")
 
 if (existsSync("output")) {
@@ -88,5 +88,21 @@ input.on("line", line => {
 
 input.on("close", () => {
     console.log("Processing configuration")
-    // TODO
+
+    for (const name in urls) {
+        const url = urls[name]
+
+        if (!url.enabled)
+            continue
+
+        console.log(`Getting: ${name}`)
+        execSync(`git clone ${url.url} .tmp`)
+        copyFileSync(`.tmp/${name}.kdbx`, `output/${name}.kdbx`)
+        copyFileSync(`.tmp/${name}.keyx;`, `output/${name}.keyx;`)
+        rmSync(".tmp", {
+            recursive: true
+        })
+    }
+
+    console.log(`Your package is now ready: ${process.cwd()}/output`)
 })
