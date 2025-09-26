@@ -74,6 +74,9 @@ input.on("line", line => {
             input.close()
             return
 
+        case "cancel":
+            process.exit(0)
+
         default:
             const name = get(commandName)
 
