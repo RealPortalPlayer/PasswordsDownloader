@@ -80,9 +80,9 @@ for (const project of readmeOriginal.split("\n")) {
 
 const parseReadmeDone = performance.now()
 
-const print = character => {
+const print = (character, includeUrl) => {
     for (const project in urls)
-        console.log(`${project}${character} ${urls[project].enabled}`)
+        console.log(`${project}${character} ${urls[project].enabled}${includeUrl ? ` (${urls[project].url})` : ""}`)
 }
 
 const get = name => {
@@ -97,7 +97,8 @@ const get = name => {
 }
 
 console.log("Select your options:")
-print(":")
+console.warn("Read the URLs to make sure nothing looks suspicious. Run \"cancel\" if they do")
+print(":", true)
 
 const input = createInterface(process.stdin, process.stdout)
 
@@ -111,7 +112,7 @@ input.on("line", line => {
     switch (commandName) {
         case "print":
             console.log("Current configuration:")
-            print(":")
+            print(":", true)
             break
 
         case "done":
@@ -128,7 +129,7 @@ input.on("line", line => {
                     urls[name].enabled = commandArguments[0].toLowerCase() === "true" || parseInt(commandArguments[0]) >= 1
             }
 
-            print(" =")
+            print(" =", false)
             break
 
         default:
