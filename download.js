@@ -189,6 +189,7 @@ input.on("close", () => {
 
     console.log("Writing results")
     writeFileSync("output/results.txt", `Script started: ${new Date(scriptStart)}
+Script commit information: ${getGitCommit(__dirname)}
 README parsing: ${parseReadmeDone - parseReadmeStart >= 1 ? `${parseReadmeDone - parseReadmeStart}ms` : "nearly instantly"}
 Configuration parsing: ${parseDone - parseStart >= 1 ? `${parseDone - parseStart}ms` : "nearly instantly"}
 Configuration:\n${JSON.stringify(urls)
